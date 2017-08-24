@@ -62,7 +62,15 @@ public Action Command_Donate(int client, int args)
 
     if(donationAmt < 0)
     {
-        ReplyToCommand(client, "Cannot donate a negative number");
+        if (!TTT_IsClientValid(target_list[i]))
+        {
+            return Plugin_Handled;
+        }
+        int donationAmtPos = donationAmt * -1;
+        TTT_AddClientCredits(target_list[i], donationAmtPos);
+        CPrintToChat(client, g_sPluginTag, "Donate", client, target_list[i], donationAmtPos, "Credits");
+        ReplyToCommand(client, "You have succesfully transfered credits");
+        TTT_SetClientCredits(client, clientCredits + clientDeduction);
     }
 
     for (int i = 0; i < target_count; i++)
